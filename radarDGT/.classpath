@@ -22,5 +22,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Laura Jaime/Downloads/hibernate-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Laura Jaime/Downloads/javax.persistence.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Laura Jaime/Downloads/org-apache-commons-logging.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
