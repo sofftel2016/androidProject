@@ -1,4 +1,4 @@
-package org.iteracion3;
+package com.radardgt.iteracion3.aperturadeexpediente.dominio;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
