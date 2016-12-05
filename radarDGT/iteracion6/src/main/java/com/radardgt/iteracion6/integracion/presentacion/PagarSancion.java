@@ -1,0 +1,121 @@
+package com.radardgt.iteracion6.integracion.presentacion;
+
+import java.awt.EventQueue;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import com.radardgt.iteracion6.integracion.persistencia.ConexionDB;
+
+import javax.swing.JButton;
+import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.ListSelectionModel;
+
+public class PagarSancion extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4921789807350695420L;
+	private JPanel contentPane;
+	private JTable table;
+	ConexionDB conexion;
+
+	/**
+	 * Create the frame.
+	 */
+	public PagarSancion(ConexionDB bbdd) {
+		setTitle("Pagar Sanción");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 342);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setBackground(Color.ORANGE);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Puntos_Sanci\u00F3n", "Importe_Sancion", "DNI_Conductor", "Nombre", "Matricula_Vehiculo"
+			}
+		));
+		table.setBounds(360, 201, -308, -169);
+		contentPane.add(table);
+		
+		JButton btnPagar = new JButton("Pagar");
+		
+		btnPagar.setBounds(63, 269, 89, 23);
+		contentPane.add(btnPagar);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		btnSalir.setBounds(286, 269, 89, 23);
+		contentPane.add(btnSalir);
+		DefaultTableModel tabla=new DefaultTableModel();
+		conexion.ejecutarConsulta("Select * from SANCIONES");
+		rellenaTablaBD(conexion.getResultSet(),tabla);
+		
+		btnPagar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Prueba para las sanciones");
+				System.out.println(table.getSelectedRow());
+			}
+		});
+	}
+	
+    /**
+     * Rellena una tabla desde BD
+     * @param resultSet Resultset con la consulta, debe ser correcta
+     * @param tabla Tabla
+     */
+    public void rellenaTablaBD(ResultSet resultSet, DefaultTableModel tabla){
+        try {
+            ResultSetMetaData metadatos = resultSet.getMetaData();
+            
+            tabla.setColumnCount(metadatos.getColumnCount());
+            
+            int numeroColumnas=tabla.getColumnCount();
+            
+            Object[] etiquetas = new Object[numeroColumnas];
+
+            // Se obtiene cada una de las etiquetas para cada columna
+            for (int i = 0; i < numeroColumnas; i++)
+            {
+               // Nuevamente, para ResultSetMetaData la primera columna es la 1. 
+               etiquetas[i] = metadatos.getColumnLabel(i + 1); 
+            }
+            
+            tabla.setColumnIdentifiers(etiquetas);
+            
+                // Para cada registro de resultado en la consulta 
+                while (resultSet.next())
+                {
+                    // Se crea y rellena la fila para el modelo de la tabla.
+                    Object[] datosFila = new Object[tabla.getColumnCount()];
+                    for (int i = 0; i < tabla.getColumnCount(); i++)
+                        datosFila[i] = resultSet.getObject(i + 1);
+                    tabla.addRow(datosFila);
+                    
+                }
+                resultSet.close();
+            } catch (SQLException ex) {
+            	ex.printStackTrace();
+        }
+    }
+}
