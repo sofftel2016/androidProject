@@ -53,7 +53,7 @@ public class ConexionDB {
                     break;
             }
             
-            conexion.setAutoCommit(true);
+            conexion.setAutoCommit(false);
             
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -155,6 +155,7 @@ public class ConexionDB {
      */
     public void ejecutarConsulta(String consulta){
         try {
+        	System.out.println(consulta);
             sentencia = conexion.createStatement();
             resultSet = sentencia.executeQuery(consulta);
             

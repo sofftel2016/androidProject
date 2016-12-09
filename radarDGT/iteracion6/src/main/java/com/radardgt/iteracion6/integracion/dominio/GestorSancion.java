@@ -103,17 +103,12 @@ public class GestorSancion {
 	 * @param db
 	 */
 	public void CrearSancion(Sancion sancion, ConexionDB db){
-		String nombreTabla="SANCIONES", columnaid="ID",colLocRadar="Localizacion_Radar",colPropVehi="id_propietario_vehiculo";
-		String col_velsancion="Velocidad_sancion", colfecha="Fecha", colcoste_sanc="Coste_sancion",colpunt_san="puntos_sancion";
-		String col_pagada="pagada";
-		String sentencia="INSERT INTO "+nombreTabla+" set "+ columnaid+","+colLocRadar+","+colPropVehi+
-				","+col_velsancion+","+colfecha+","+colcoste_sanc+","+colpunt_san+","+col_pagada+
-				" VALUES ="+sancion.getId()+","+ sancion.getExpediente().getRadar().getLocalizacion()+
-				","+sancion.getPropietario().getId()+","+sancion.getExpediente().getVelocidad()+","+
+		String nombreTabla="SANCIONES";
+		String sentencia="INSERT INTO "+nombreTabla+" VALUES ("+sancion.getId()+",'"+ sancion.getExpediente().getRadar().getLocalizacion()+
+				"',"+sancion.getPropietario().getId()+","+sancion.getExpediente().getVelocidad()+","+
 				sancion.getFecha()+","+sancion.getCoste_sancion()+","+sancion.getPuntos_sancion()+","+
-				sancion.getPagada();
-		db.ejecutarConsulta(sentencia);
-		db.commit();
+				sancion.getPagada()+")";
+		db.ejecutarInstruccionCommit(sentencia,true);		
 	}
 
 	/**

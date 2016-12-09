@@ -32,11 +32,10 @@ public class GestorVehiculo {
 	 */
 	public void cambiarPropietario(Propietario prop, Vehiculo coche,ConexionDB bd){
 		/*Estas variables seran sustituidas cuando se tenga la BBDD diseñada*/
-		String nombreTabla="PROPIETARIOS_VEHICULOS", columna ="Dni_propietario";
-		String sentencia="update "+nombreTabla+" set "+columna+"="+prop.getId()+
-				" where Matricula_vehiculo ="+coche.getMatricula();
-		bd.ejecutarConsulta(sentencia);
-		bd.commit();
+		String nombreTabla="PROPIETARIOS_VEHICULOS", columna ="DNI_PROPIETARIO";
+		String sentencia="update "+nombreTabla+" set "+columna+"='"+prop.getDni()+
+				"' where MATRICULA_VEHICULO='"+coche.getMatricula()+"'";
+		bd.ejecutarInstruccionCommit(sentencia, true);
 	}
 	/**
 	 * Metodo que devuelve un vehiculo segun el propietario pasado
@@ -48,7 +47,7 @@ public class GestorVehiculo {
 	public Vehiculo obtenerVehiculo(Propietario prop, ConexionDB bd){
 		Vehiculo coche = null;
 		/*Estas variables seran sustituidas cuando se tenga la BBDD diseñada*/
-		String sentencia = "SELECT * FROM VEHICULOS WHERE Matricula ="+
+		String sentencia = "SELECT MATRICULA, TIPOVEHICULO FROM VEHICULOS WHERE MATICULA ="+
 				"(SELECT Matricula_vehiculo FROM PROPIETARIOS_VEHICULOS WHERE Dni_propietario = "+prop.getDni()+")";
 		bd.ejecutarConsulta(sentencia);
 		ResultSet result = bd.getResultSet();
@@ -70,8 +69,8 @@ public class GestorVehiculo {
 	public Vehiculo obtenerVehiculo(String matricula, ConexionDB bd){
 		Vehiculo coche = null;
 		/*Estas variables seran sustituidas cuando se tenga la BBDD diseñada*/
-		String nombretabla="", colmatricula ="";
-		String sentencia ="select * from "+nombretabla+" where "+colmatricula+"="+matricula;
+		String nombretabla="VEHICULOS", colmatricula ="MATRICULA";
+		String sentencia ="select ID,MATRICULA,TIPOVEHICULO from "+nombretabla+" where "+colmatricula+"='"+matricula+"'";
 		bd.ejecutarConsulta(sentencia);
 		ResultSet result = bd.getResultSet();
 		try {

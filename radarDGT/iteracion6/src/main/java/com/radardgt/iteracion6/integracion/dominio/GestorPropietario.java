@@ -44,14 +44,15 @@ public class GestorPropietario {
 	 */
 	public Propietario DevolverPropietario(Vehiculo v,ConexionDB bd){
         Propietario propietario = null;
-		String nombretabla="PROPIETARIO", id ="id";
-		String sentencia ="select * from "+nombretabla+" where "+id+"=(select DNI_PROPIETARIO from PROPIETARIOS_VEHICULOS where MATRICULA_VEHICULO='"+v.getMatricula()+"')";
-                bd.ejecutarConsulta(sentencia);
+		String nombretabla="PROPIETARIOS";
+		String sentencia ="select DNI,NOMBRE,APELLIDOS,CIUDAD,TELEFONO,PUNTOS "
+				+ "from "+nombretabla+" where DNI=(select DNI_PROPIETARIO from PROPIETARIOS_VEHICULOS where MATRICULA_VEHICULO='"+v.getMatricula()+"')";
+        bd.ejecutarConsulta(sentencia);
 		ResultSet result = bd.getResultSet();
 		try {
 			result.next();
-			propietario = new Propietario(result.getInt(1),result.getString(2), result.getString(3),
-                                result.getString(4),result.getString(5),result.getInt(6),result.getInt(7));
+			propietario = new Propietario(bd.proximoIDDisponible("ID", nombretabla)-1,result.getString(1), result.getString(2),
+                                result.getString(3),result.getString(4),result.getInt(5),result.getInt(6));
 		}catch (SQLException e) {
 			System.out.println("ERROR --> "+e.getMessage());
 		}
@@ -66,12 +67,28 @@ public class GestorPropietario {
 		String nombreTabla="PROPIETARIOS", columna ="Puntos";
 		String sentencia="update "+nombreTabla+" set "+columna+" = "+puntos+
 				" where id ="+prop.getId();
-		db.ejecutarConsulta(sentencia);
-		db.commit();
+		//db.ejecutarInstruccionCommit(sentencia,true);
 	}
 	
 	public void PagarSancion(Sancion sancion, int pagado){
 		sancion.setPagada(pagado);	
+	}
+	
+	public Propietario buscarPropietario(String text, ConexionDB bbdd) {
+		Propietario propietario = null;
+		String nombretabla="PROPIETARIOS";
+		String sentencia ="select DNI,NOMBRE,APELLIDOS,CIUDAD,TELEFONO,PUNTOS "
+				+ "from "+nombretabla+" where DNI='"+text+"'";
+        bbdd.ejecutarConsulta(sentencia);
+		ResultSet result = bbdd.getResultSet();
+		try {
+			result.next();
+			propietario = new Propietario(bbdd.proximoIDDisponible("ID", nombretabla)-1,result.getString(1), result.getString(2),
+                                result.getString(3),result.getString(4),result.getInt(5),result.getInt(6));
+		}catch (SQLException e) {
+			System.out.println("ERROR --> "+e.getMessage());
+		}
+		return propietario;
 	}
         
 	

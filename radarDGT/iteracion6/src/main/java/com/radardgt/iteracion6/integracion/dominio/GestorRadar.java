@@ -8,6 +8,7 @@ package com.radardgt.iteracion6.integracion.dominio;
 
 import static java.lang.Thread.sleep;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,30 +57,27 @@ public class GestorRadar {
         public void GenerarSanciones(ConexionDB bbdd,Radar[] radares, Vehiculo[] vehiculos, GestorSancion gs,GestorPropietario gp, DefaultTableModel tabla){
             // Comprobar coche
             for(int i=0; i<radares.length;i++){
-                for (int j=0; j<radares.length;j++){
-                    try {
-                        sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                for (int j=0; j<vehiculos.length;j++){
                     if(radares[i].getLimiteExpedienteSancionador()>vehiculos[j].getVelocidad()){
-                    	int fecha=0;
-                        Expediente e=new Expediente(bbdd.proximoIDDisponible("ID","SANCIONES"),vehiculos[j].getMatricula(),radares[i],vehiculos[j].getVelocidad());
-                        Sancion s=new Sancion(bbdd.proximoIDDisponible("ID","SANCIONES"),e,gp.DevolverPropietario(vehiculos[j], bbdd),vehiculos[j],fecha,0,0,0);
-                        System.out.println("Hola");
+                    	Date d=new Date();
+                    	int fecha=d.getDate();
+                        Expediente e=new Expediente(bbdd.proximoIDDisponible("id","SANCIONES"),vehiculos[j].getMatricula(),radares[i],vehiculos[j].getVelocidad());
+                        Sancion s=new Sancion(bbdd.proximoIDDisponible("id","SANCIONES"),e,gp.DevolverPropietario(vehiculos[j], bbdd),vehiculos[j],fecha,0,0,0);
                         int coste=gs.calcularCosteSancion(e);
                         int puntos=gs.calcularPuntosSancion(e);
                         s.setCoste_sancion(coste);
-                       // if((s.getPropietario().getPuntos()-puntos)<0) {
-                         //   JOptionPane.showMessageDialog(null, "Error al restar puntos", "Restar Puntos", JOptionPane.ERROR_MESSAGE);
-                        //}
-                        String rowData[]=new String[3];
-                        rowData[0]=e.getMatricula();
-                        rowData[1]=e.getVelocidad()+"";
-                        rowData[2]=s.getPropietario().getNombre();
+                      if((s.getPropietario().getPuntos()-puntos)<0) {
+                          JOptionPane.showMessageDialog(null, "Error al restar puntos", "Restar Puntos", JOptionPane.ERROR_MESSAGE);
+                       }
                         gs.restarPuntosConductor(s, gp, bbdd);
                         gs.CrearSancion(s, bbdd);
-                        tabla.addRow(rowData);
+                        try {
+							sleep(50);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        tabla.addRow(new Object[] {e.getMatricula(),e.getVelocidad(),s.getPropietario().getNombre()});
                     }
                 }
             }

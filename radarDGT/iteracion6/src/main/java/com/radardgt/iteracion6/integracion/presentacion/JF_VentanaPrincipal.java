@@ -26,6 +26,9 @@ import com.radardgt.iteracion6.integracion.persistencia.ConexionDB;
 import java.awt.Window.Type;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.BevelBorder;
+import javax.swing.JScrollPane;
 
 /**
  * Esta es la clase que contiene la ventana principal de la aplicacion
@@ -39,17 +42,17 @@ public class JF_VentanaPrincipal extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	// Atributos
-	ConexionDB bbdd;
+	static ConexionDB bbdd;
     GestorRadar radar;
     GestorVehiculo gv;
     GestorPropietario gp;
     GestorSancion gs;
-    private JTable table;
     Boolean parar;
     
     // Forms
     JF_CambiarVehiculoPropietario cambiarPropietario;
     JF_PagarSancion pagarSancion;
+    private JTable table;
 	
     /**
 	 * Launch the application.
@@ -104,13 +107,13 @@ public class JF_VentanaPrincipal extends JFrame {
 		});
 		JMenu mnVehiculos = new JMenu("Vehiculos");
 		JButton btnIniciarRadar = new JButton("Iniciar Radar");
-		table = new JTable();
-		DefaultTableModel modelotabla=new DefaultTableModel();
-		table.setModel(modelotabla);
+		DefaultTableModel modelotabla=new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"MATRICULA", "VELOCIDAD", "PROPIETARIO"
+				});
 		JButton btnPararRadar = new JButton("Parar Radar");
-		
-		// Ajustar Posicion
-		table.setBounds(41, 139, 434, 240);
 		
 		// Crar barra de menu
 		setJMenuBar(menuBar);
@@ -123,10 +126,6 @@ public class JF_VentanaPrincipal extends JFrame {
 		menuBar.add(mnVehiculos);
 		menuBar.add(mnSancion);
 		getContentPane().setLayout(null);
-		
-		// Añadirlos al panel
-		table.setBackground(Color.WHITE);
-		getContentPane().add(table);
 		
 		// Objetos
 		radar=new GestorRadar();
@@ -141,6 +140,12 @@ public class JF_VentanaPrincipal extends JFrame {
 		
 		btnPararRadar.setBounds(333, 32, 110, 53);
 		getContentPane().add(btnPararRadar);
+		
+		table = new JTable();
+		table.setBounds(46, 132, 400, 295);
+		table.setModel(modelotabla);
+		
+		getContentPane().add(table);
 		
 		// Eventos
 		mntmCerrar.addMouseListener(new MouseAdapter() {
@@ -160,15 +165,15 @@ public class JF_VentanaPrincipal extends JFrame {
 		btnIniciarRadar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				limpiarDatosTabla(modelotabla);
 				Radar[] radares=radar.iniciarRadares();
 				Vehiculo[] vehiculos=gv.crearVehiculos(bbdd);
-				while(!parar){
+				//for(int i=0; i<14000;i++){
 					System.out.println("Entrando");
 					// Se crean las sanciones
 					radar.GenerarSanciones(bbdd, radares, vehiculos, gs, gp, modelotabla);
-					//limpiarDatosTabla(modelotabla);
-				}
+					
+				//}
 			}
 		});
 		
@@ -176,7 +181,9 @@ public class JF_VentanaPrincipal extends JFrame {
 		
 		
 	}
-
+    public static ConexionDB getConexion(){
+    	return bbdd;
+    }
 	private void crearConexionconBBDD() {
 		// TODO Auto-generated method stub
 		bbdd=new ConexionDB("Oracle","localhost","oradev","LUIS","3907");
@@ -194,5 +201,4 @@ public class JF_VentanaPrincipal extends JFrame {
             }
         }
     }
-
 }

@@ -19,13 +19,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ListSelectionModel;
+import java.awt.SystemColor;
 
 public class JF_PagarSancion extends JFrame {
 
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4921789807350695420L;
+	private static final long serialVersionUID = 2720595042665147092L;
 	private JPanel contentPane;
 	private JTable table;
 	ConexionDB conexion;
@@ -45,9 +47,10 @@ public class JF_PagarSancion extends JFrame {
 	 * Create the frame.
 	 */
 	public JF_PagarSancion() {
+		conexion=JF_VentanaPrincipal.getConexion();
 		setTitle("Pagar Sanción");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 342);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(200, 200, 450, 342);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -55,15 +58,8 @@ public class JF_PagarSancion extends JFrame {
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setBackground(Color.ORANGE);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Puntos_Sanci\u00F3n", "Importe_Sancion", "DNI_Conductor", "Nombre", "Matricula_Vehiculo"
-			}
-		));
-		table.setBounds(360, 201, -308, -169);
+		table.setBackground(SystemColor.text);
+		table.setBounds(31, 33, 375, 213);
 		contentPane.add(table);
 		
 		JButton btnPagar = new JButton("Pagar");
@@ -79,9 +75,15 @@ public class JF_PagarSancion extends JFrame {
 		});
 		btnSalir.setBounds(286, 269, 89, 23);
 		contentPane.add(btnSalir);
-		DefaultTableModel tabla=new DefaultTableModel();
+		DefaultTableModel tabla=new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Puntos_Sanción", "Importe_Sancion", "DNI_Conductor", "Nombre", "Matricula_Vehiculo"
+				});
+		table.setModel(tabla);
 		conexion.ejecutarConsulta("Select * from SANCIONES");
-		rellenaTablaBD(conexion.getResultSet(),tabla);
+		//rellenaTablaBD(conexion.getResultSet(),tabla);
 		
 		btnPagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
