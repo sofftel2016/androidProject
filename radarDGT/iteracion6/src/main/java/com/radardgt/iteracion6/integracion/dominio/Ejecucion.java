@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 import com.radardgt.iteracion6.integracion.persistencia.*;
 
-/*********************************************************************
+/********************************************************************
 * Class Name: GestorPropietario_version1.2
 * Se ha añadido un nuevo método a esta clase
 * Author/s name: Luis
