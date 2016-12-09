@@ -13,13 +13,13 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class CambiarVehiculoPropietario extends JFrame {
+public class JF_CambiarVehiculoPropietario extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -40034147737167158L;
-	
+	public static JF_CambiarVehiculoPropietario instance=null;
 	private JPanel contentPane;
 	private JTextField txtMatricula;
 	private JTextField txtPropietario;
@@ -27,11 +27,21 @@ public class CambiarVehiculoPropietario extends JFrame {
 	private JTextField txtN_DNI;
 	private JTextField txtN_Nombre;
 
+	public static JF_CambiarVehiculoPropietario getInstance(){
+        createInstance();
+        return instance;
+    }
+    
+    private synchronized static void createInstance(){
+        if (instance == null) {
+            instance = new JF_CambiarVehiculoPropietario();  
+        }
+    }
 
 	/**
 	 * Create the frame.
 	 */
-	public CambiarVehiculoPropietario(ConexionDB bbdd) {
+	public JF_CambiarVehiculoPropietario() {
 		setTitle("Cambiar Propietario Vehículo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 482, 370);

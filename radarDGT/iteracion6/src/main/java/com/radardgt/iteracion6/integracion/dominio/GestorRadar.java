@@ -66,12 +66,13 @@ public class GestorRadar {
                     	int fecha=0;
                         Expediente e=new Expediente(bbdd.proximoIDDisponible("ID","SANCIONES"),vehiculos[j].getMatricula(),radares[i],vehiculos[j].getVelocidad());
                         Sancion s=new Sancion(bbdd.proximoIDDisponible("ID","SANCIONES"),e,gp.DevolverPropietario(vehiculos[j], bbdd),vehiculos[j],fecha,0,0,0);
+                        System.out.println("Hola");
                         int coste=gs.calcularCosteSancion(e);
                         int puntos=gs.calcularPuntosSancion(e);
                         s.setCoste_sancion(coste);
-                        if((s.getPropietario().getPuntos()-puntos)<0) {
-                            JOptionPane.showMessageDialog(null, "Error al restar puntos", "Restar Puntos", JOptionPane.ERROR_MESSAGE);
-                        }
+                       // if((s.getPropietario().getPuntos()-puntos)<0) {
+                         //   JOptionPane.showMessageDialog(null, "Error al restar puntos", "Restar Puntos", JOptionPane.ERROR_MESSAGE);
+                        //}
                         String rowData[]=new String[3];
                         rowData[0]=e.getMatricula();
                         rowData[1]=e.getVelocidad()+"";

@@ -23,13 +23,16 @@ import com.radardgt.iteracion6.integracion.dominio.GestorVehiculo;
 import com.radardgt.iteracion6.integracion.dominio.Radar;
 import com.radardgt.iteracion6.integracion.dominio.Vehiculo;
 import com.radardgt.iteracion6.integracion.persistencia.ConexionDB;
+import java.awt.Window.Type;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Esta es la clase que contiene la ventana principal de la aplicacion
  * @author Luis Diaz
  *
  */
-public class VentanaPrincipal extends JFrame {
+public class JF_VentanaPrincipal extends JFrame {
 
 	/**
 	 * 
@@ -43,6 +46,10 @@ public class VentanaPrincipal extends JFrame {
     GestorSancion gs;
     private JTable table;
     Boolean parar;
+    
+    // Forms
+    JF_CambiarVehiculoPropietario cambiarPropietario;
+    JF_PagarSancion pagarSancion;
 	
     /**
 	 * Launch the application.
@@ -51,7 +58,7 @@ public class VentanaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaPrincipal frame = new VentanaPrincipal();
+					JF_VentanaPrincipal frame = new JF_VentanaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,7 +70,9 @@ public class VentanaPrincipal extends JFrame {
     /**
      * Constructor de la ventana
      */
-    public VentanaPrincipal() {
+    public JF_VentanaPrincipal() {
+    	setResizable(false);
+    	setBounds(200,100,500,500);
     	// Inicializar variables
     	parar=false;
 		// Crear Componentes
@@ -72,19 +81,25 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmCerrar = new JMenuItem("Cerrar");
 		JMenu mnSancion = new JMenu("Sancion");
 		JMenuItem mntmCambiarPropietario = new JMenuItem("Cambiar Propietario");
+		mntmCambiarPropietario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cambiarPropietario=JF_CambiarVehiculoPropietario.getInstance();
+				cambiarPropietario.setVisible(true);
+			}
+		});
 		mntmCambiarPropietario.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				CambiarVehiculoPropietario c=new CambiarVehiculoPropietario(bbdd);
-				c.setVisible(true);
+				cambiarPropietario=JF_CambiarVehiculoPropietario.getInstance();
+				cambiarPropietario.setVisible(true);
 			}
 		});
 		JMenuItem mntmPagarSancin = new JMenuItem("Pagar Sanción");
 		mntmPagarSancin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PagarSancion p=new PagarSancion(bbdd);
-				p.setVisible(true);
+				pagarSancion=JF_PagarSancion.getInstance();
+				pagarSancion.setVisible(true);
 			}
 		});
 		JMenu mnVehiculos = new JMenu("Vehiculos");
@@ -145,6 +160,7 @@ public class VentanaPrincipal extends JFrame {
 		btnIniciarRadar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				
 				Radar[] radares=radar.iniciarRadares();
 				Vehiculo[] vehiculos=gv.crearVehiculos(bbdd);
 				while(!parar){

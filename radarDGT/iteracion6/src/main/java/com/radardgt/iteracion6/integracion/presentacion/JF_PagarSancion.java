@@ -6,6 +6,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ListSelectionModel;
 
-public class PagarSancion extends JFrame {
+public class JF_PagarSancion extends JFrame {
 
 	/**
 	 * 
@@ -28,11 +29,22 @@ public class PagarSancion extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	ConexionDB conexion;
+	public static JF_PagarSancion instance=null;
 
+	public static JF_PagarSancion getInstance(){
+        createInstance();
+        return instance;
+    }
+    
+    private synchronized static void createInstance(){
+        if (instance == null) {
+            instance = new JF_PagarSancion();  
+        }
+    }
 	/**
 	 * Create the frame.
 	 */
-	public PagarSancion(ConexionDB bbdd) {
+	public JF_PagarSancion() {
 		setTitle("Pagar Sanción");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 342);

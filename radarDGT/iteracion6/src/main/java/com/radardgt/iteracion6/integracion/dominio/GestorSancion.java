@@ -103,7 +103,7 @@ public class GestorSancion {
 	 * @param db
 	 */
 	public void CrearSancion(Sancion sancion, ConexionDB db){
-		String nombreTabla="SANCIONES", columnaid="id",colLocRadar="Localizacion_Radar",colPropVehi="id_propietario_vehiculo";
+		String nombreTabla="SANCIONES", columnaid="ID",colLocRadar="Localizacion_Radar",colPropVehi="id_propietario_vehiculo";
 		String col_velsancion="Velocidad_sancion", colfecha="Fecha", colcoste_sanc="Coste_sancion",colpunt_san="puntos_sancion";
 		String col_pagada="pagada";
 		String sentencia="INSERT INTO "+nombreTabla+" set "+ columnaid+","+colLocRadar+","+colPropVehi+
