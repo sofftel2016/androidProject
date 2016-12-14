@@ -107,7 +107,7 @@ public class JF_VentanaPrincipal extends JFrame {
 		});
 		JMenu mnVehiculos = new JMenu("Vehiculos");
 		JButton btnIniciarRadar = new JButton("Iniciar Radar");
-		DefaultTableModel modelotabla=new DefaultTableModel(
+		final DefaultTableModel modelotabla=new DefaultTableModel(
 				new Object[][] {
 				},
 				new String[] {

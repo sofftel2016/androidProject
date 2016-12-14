@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import com.radardgt.iteracion6.integracion.persistencia.*;
+import com.radardgt.*;
 
 /********************************************************************
 * Class Name: GestorPropietario_version1.2

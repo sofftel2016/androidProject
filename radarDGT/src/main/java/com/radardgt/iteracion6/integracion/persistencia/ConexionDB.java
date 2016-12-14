@@ -155,7 +155,7 @@ public class ConexionDB {
      */
     public void ejecutarConsulta(String consulta){
         try {
-        	System.out.println(consulta);
+        	//System.out.println(consulta);
             sentencia = conexion.createStatement();
             resultSet = sentencia.executeQuery(consulta);
             
